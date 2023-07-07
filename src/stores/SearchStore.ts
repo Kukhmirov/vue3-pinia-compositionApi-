@@ -1,9 +1,9 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 
-import { useMovieStore } from "./MovieStore";
+import { useApi } from "@/api/index";
+import { useMovieStore } from "@/stores/MovieStore";
 
-const apiKey = "9YX575P-GYR42AT-NP6MJEZ-QPDVCKK";
 
 interface Movie {
     id: number;
@@ -14,21 +14,27 @@ interface Movie {
     isWatched: boolean;
 }
 
+const restApi = useApi();
+const urlApi = import.meta.env.VITE_MOVIE_URL_API;
+const key = import.meta.env.VITE_API_KEY;
+const get = "v1.2/movie/search?page=1&limit=10&query=";
+
 export const useSearchStore = defineStore("searchStore", () => {
     const isLoader = ref<Boolean>(false);
     const movies = ref<Movie[]>([]);
 
     const getMovies = async(search: String) => {
         isLoader.value = true;
-        const url = `https://api.kinopoisk.dev/v1.2/movie/search?page=1&limit=10&query=${search}`;
-        const res = await fetch(url, {
+        const url = `${urlApi}${get}${search}`;
+
+        const res = await restApi.get(url, {
             headers: {
-                "X-API-KEY": apiKey,
+                "X-API-KEY": key,
                 accept: "application/json",
             },
-            mode: "cors",
         });
-        const data = await res.json();
+        const data = await res.data;
+
         movies.value = data.docs;
         isLoader.value = false;
     };
