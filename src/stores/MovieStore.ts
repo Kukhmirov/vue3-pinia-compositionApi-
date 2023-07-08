@@ -2,14 +2,8 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
 
-interface Movie {
-    id: number;
-    name: string;
-    description: string;
-    poster: string;
-    year: string;
-    isWatched: boolean;
-}
+import { Movie } from "@/types/Interface";
+
 
 export const useMovieStore = defineStore("movieStore", () => {
     const movies = ref<Movie[]>([]);

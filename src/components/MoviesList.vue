@@ -46,15 +46,8 @@
 <script setup lang="ts">
 import { useMovieStore } from "@/stores/MovieStore";
 import { useSearchStore } from "@/stores/SearchStore";
+import { Movie } from "@/types/Interface";
 
-interface Movie {
-    id: number;
-    name: string;
-    description: string;
-    poster: string;
-    year: string;
-    isWatched: boolean;
-}
 
 const props = defineProps({
     movie: {
